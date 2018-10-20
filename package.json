@@ -13,6 +13,11 @@
     "build": "cd client && npm run build",
     "heroku-postbuild": "npm run build"
   },
+  "engines": {
+    "node": "8.9.4",
+    "npm": "5.6.x",
+    "yarn": "1.4.0"s
+  },
   "author": "",
   "license": "ISC",
   "devDependencies": {
