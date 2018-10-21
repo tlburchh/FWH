@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import DeleteBtn from "../../components/DeleteBtn";
 import Jumbotron from "../../components/Jumbotron";
 import API from "../../utils/API";
+import Map from '../../components/Map';
 import { Link } from "react-router-dom";
 import { Col, Row, Container } from "../../components/Grid";
 import { List, ListItem } from "../../components/List";
@@ -10,9 +11,6 @@ import { Input, TextArea, FormBtn } from "../../components/Form";
 class Trails extends Component {
   state = {
     books: [],
-    title: "",
-    author: "",
-    synopsis: ""
   };
 
   componentDidMount() {
@@ -58,10 +56,8 @@ class Trails extends Component {
       <Container fluid>
         <Row>
           <Col size="md-6">
-            <Jumbotron>
-              <h1>What Books Should I Read?</h1>
-            </Jumbotron>
-            <form>
+          <Map></Map>
+            {/* <form>
               <Input
                 value={this.state.title}
                 onChange={this.handleInputChange}
@@ -86,7 +82,7 @@ class Trails extends Component {
               >
                 Submit Book
               </FormBtn>
-            </form>
+            </form> */}
           </Col>
           <Col size="md-6 sm-12">
             <Jumbotron>

@@ -7,6 +7,7 @@ import Trails from './pages/Trails';
 import Detail from "./pages/Detail";
 import NoMatch from "./pages/NoMatch";
 import AUTH from './utils/AUTH';
+import Map from './components/Map';
 
 class App extends Component {
   
@@ -73,7 +74,7 @@ class App extends Component {
               <Switch>
                 <Route exact path="/" component={() => <Trails user={this.state.user}/>} />
                 <Route exact path="/weather" component={() => <Trails user={this.state.user}/>} />
-                <Route exact path="/trails/" component={Detail} />
+                <Route exact path="/trails/" component={(Detail)} />
 								<Route exact path="/trails/:id" component={Detail} />
                 <Route component={NoMatch} />
               </Switch>
