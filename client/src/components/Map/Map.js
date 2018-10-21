@@ -1,39 +1,73 @@
-import React, { Component } from 'react';
-import GoogleMapReact from 'google-map-react';
- 
-const AnyReactComponent = ({ text }) => <div>{text}</div>;
- 
-class Map extends Component {
-  static defaultProps = {
-    center: {
-      lat: 35.994034,
-      lng: -78.898621
-    },
-    zoom: 10
-  };
+import React from 'react';
+import { compose, withProps } from "recompose"
+import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps"
+
  
 
+const MapWithAMarker = compose(
+  withProps({
+      googleMapURL: "https://maps.googleapis.com/maps/api/js?key=AIzaSyAyyAh4A8PqnQBj9amUHW_5kUUPbkIzXGQ",
+      loadingElement: <div style={{ height: `100%` }} />,
+      containerElement: <div style={{ height: `400px` }} />,
+      mapElement: <div style={{ height: `100%` }} />,
+  }),
+  withScriptjs,
+  withGoogleMap
+)((props) =>
+  <GoogleMap
+      defaultZoom={8}
+      center={{ lat: props.currentLocation.lat, lng: props.currentLocation.lng }}
+  >
+      {props.isMarkerShown && <Marker position={{ lat: props.currentLocation.lat, lng: props.currentLocation.lng }} onClick={props.onMarkerClick} />}
+  </GoogleMap>
+)
+  
+class Map extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      currentLatLng: {
+        lat: 0,
+        lng: 0
+      },
+      isMarkerShown: false
+    }
+  }
+
+  showCurrentLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          this.setState(prevState => ({
+            currentLatLng: {
+              ...prevState.currentLatLng,
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            },
+            isMarkerShown: true
+          }))
+        }
+      )
+    } else {
+      error => console.log(error)
+    }
+  }
+
+
+  componentDidMount() {
+    this.showCurrentLocation()
+  }
 
   render() {
     return (
-    
-      // Important! Always set the container height explicitly
-      <div style={{ height: '500px', width: '100%' }}>
-    
-        <GoogleMapReact
-          bootstrapURLKeys={{ key: 'AIzaSyAyyAh4A8PqnQBj9amUHW_5kUUPbkIzXGQ' }}
-          defaultCenter={this.props.center}
-          defaultZoom={this.props.zoom}
-        >
-          <AnyReactComponent
-            lat={35.994034}
-            lng={-78.898621}
-            text={'Durham'}
-          />
-        </GoogleMapReact>
+      <div>
+        <MapWithAMarker
+          isMarkerShown={this.state.isMarkerShown}
+          currentLocation={this.state.currentLatLng} />
       </div>
     );
   }
 }
+
  
 export default Map;
