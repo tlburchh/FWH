@@ -1,92 +1,43 @@
-// import React, { Component } from "react";
-// import DeleteBtn from "../../components/DeleteBtn";
-// import Jumbotron from "../../components/Jumbotron";
-// import API from "../../utils/API";
-// import { Link } from "react-router-dom";
-// import { Col, Row, Container } from "../../components/Grid";
-// import { List, ListItem } from "../../components/List";
-// import { Input, TextArea, FormBtn } from "../../components/Form";
+// Docs at http://simpleweatherjs.com
 
-// class Books extends Component {
-//   state = {
-//     // books: [],
+/* Does your browser support geolocation? */
+if ("geolocation" in navigator) {
+  $('.js-geolocation').show(); 
+} else {
+  $('.js-geolocation').hide();
+}
 
-//   };
+/* Where in the world are you? */
+$('.js-geolocation').on('click', function() {
+  navigator.geolocation.getCurrentPosition(function(position) {
+    loadWeather(position.coords.latitude+','+position.coords.longitude); //load weather using your lat/lng coordinates
+  });
+});
 
-  // componentDidMount() {
-  //   this.loadBooks();
-  // }
+/* 
+* Test Locations
+* Austin lat/long: 30.2676,-97.74298
+* Austin WOEID: 2357536
+*/
+$(document).ready(function() {
+  loadWeather('Seattle',''); //@params location, woeid
+});
 
-  // loadBooks = () => {
-  //   API.getBooks()
-  //     .then(res =>
-  //       this.setState({ books: res.data, title: "", author: "", synopsis: "" })
-  //     )
-  //     .catch(err => console.log(err));
-  // };
-
-
-
-//   render() {
-//     return (
-//       <Container fluid>
-//         <Row>
-//           <Col size="md-6">
-//             <Jumbotron>
-//               <h1>What Books Should I Read?</h1>
-//             </Jumbotron>
-//             <form>
-//               <Input
-//                 value={this.state.title}
-//                 onChange={this.handleInputChange}
-//                 name="title"
-//                 placeholder="Title (required)"
-//               />
-//               <Input
-//                 value={this.state.author}
-//                 onChange={this.handleInputChange}
-//                 name="author"
-//                 placeholder="Author (required)"
-//               />
-//               <TextArea
-//                 value={this.state.synopsis}
-//                 onChange={this.handleInputChange}
-//                 name="synopsis"
-//                 placeholder="Synopsis (Optional)"
-//               />
-//               <FormBtn
-//                 disabled={!(this.state.author && this.state.title)}
-//                 onClick={this.handleFormSubmit}
-//               >
-//                 Submit Book
-//               </FormBtn>
-//             </form>
-//           </Col>
-//           <Col size="md-6 sm-12">
-//             <Jumbotron>
-//               <h1>Books On My List</h1>
-//             </Jumbotron>
-//             {this.state.books.length ? (
-//               <List>
-//                 {this.state.books.map(book => (
-//                   <ListItem key={book._id}>
-//                     <Link to={"/books/" + book._id}>
-//                       <strong>
-//                         {book.title} by {book.author}
-//                       </strong>
-//                     </Link>
-//                     <DeleteBtn onClick={() => this.deleteBook(book._id)} />
-//                   </ListItem>
-//                 ))}
-//               </List>
-//             ) : (
-//               <h3>No Results to Display</h3>
-//             )}
-//           </Col>
-//         </Row>
-//       </Container>
-//     );
-//   }
-// }
-
-// export default Books;
+function loadWeather(location, woeid) {
+  $.simpleWeather({
+    location: location,
+    woeid: woeid,
+    unit: 'f',
+    success: function(weather) {
+      html = '<h2><i class="icon-'+weather.code+'"></i> '+weather.temp+'&deg;'+weather.units.temp+'</h2>';
+      html += '<ul><li>'+weather.city+', '+weather.region+'</li>';
+      html += '<li class="currently">'+weather.currently+'</li>';
+      html += '<li>'+weather.alt.temp+'&deg;C</li></ul>';  
+      
+      $("#weather").html(html);
+    },
+    error: function(error) {
+      $("#weather").html('<p>'+error+'</p>');
+    }
+  });
+}

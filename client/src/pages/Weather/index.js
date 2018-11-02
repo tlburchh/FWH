@@ -1,1 +1,1 @@
-export { default } from "./Trails.js";
+export { default } from "./Weather.js";

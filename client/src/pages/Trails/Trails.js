@@ -2,13 +2,13 @@ import React, { Component } from "react";
 // import DeleteBtn from "../../components/DeleteBtn";
 import Jumbotron from "../../components/Jumbotron";
 import API from "../../utils/API";
-import LocalGoogleMap from '../../components/Map';
+// import Map from '../../components/Map';
 // import { Link } from "react-router-dom";
 import { Col, Row, Container } from "../../components/Grid";
 // import { List, ListItem } from "../../components/List";
 import { Input, TextArea, FormBtn } from "../../components/Form";
 // import { SearchBox } from "react-google-maps/lib/components/places/SearchBox";
-// import SearchBox from "../../components/SearchBox/SearchBox"
+import WeatherCard from "../../components/WeatherCard/WeatherCard";
 class Trails extends Component {
   state = {
     trailsData: [],
@@ -18,13 +18,13 @@ class Trails extends Component {
     this.loadTrails();
   }
   //search hiking API
-  searchTrailsData = () => {
-    API.searchTrails(lat, long)
-    .then(res => this.setState({trailsData: res.data}))
-    .catch(err => console.log(err));
-    console.log("API READ!")
-    console.log(res.data)
-  };
+  // searchTrailsData = () => {
+  //   API.searchTrails(lat, long)
+  //   .then(res => this.setState({trailsData: res.data}))
+  //   .catch(err => console.log(err));
+  //   console.log("API READ!")
+  //   console.log(res.data)
+  // };
 
 //load saved trails
   loadTrails = () => {
@@ -95,7 +95,7 @@ class Trails extends Component {
               </FormBtn>
             </form>
           
-            <LocalGoogleMap></LocalGoogleMap>
+            {/* <Map></Map> */}
           
           
 
@@ -104,22 +104,8 @@ class Trails extends Component {
              <Jumbotron>
                <h1>Weather</h1>
              </Jumbotron>
-             {/* {this.state.books.length ? ( */}
-              {/* <List>
-                {this.state.books.map(book => (
-                  <ListItem key={book._id}>
-                    <Link to={"/books/" + book._id}>
-                      <strong>
-                        {book.title} by {book.author}
-                      </strong>
-                    </Link>
-                    <DeleteBtn onClick={() => this.deleteBook(book._id)} />
-                  </ListItem>
-                ))}
-              </List>
-               ) : (
-                 <h3>No Results to Display</h3>
                )} */}
+                <WeatherCard />
              </Col>
           </Row>
          </Container>

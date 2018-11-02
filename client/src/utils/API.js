@@ -9,8 +9,8 @@ const results = '&maxResults=50';
 const APIKEY = '&key=200310958-80eadbd0eda211e9f1bec2cca75b17cb';
           export default {
   searchTrails: function(lat, long) {
-    return axios.get(BASEURL + latRef + lat + longRef + long + results + APIKEY )
-  }
+    return axios.get(BASEURL + latRef + lat + longRef + long + results + APIKEY );
+  },
   // Gets all trails
   getTrails: function() {
     return axios.get("/api/trails");
