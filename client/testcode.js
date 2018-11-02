@@ -1,10 +1,6 @@
 import React, {Component} from 'react';
 import MapGL, {Marker, Popup, NavigationControl} from 'react-map-gl';
-import Marker from "../marker";
-import Popup from "../popup";
-// import Marker from "../marker"
-import NavigationControl from "../navigation-control"
-import Pin from '../Pin'
+import Pin from './Pin'
 const TOKEN = 'pk.eyJ1IjoidGxidXJjaGhhcmR0IiwiYSI6ImNqbnV2dTB3czAycjEzcWtnem80cm02a3gifQ.oei0cMDevhPmtfuvpgTh1w'; // Set your mapbox token here
 const navStyle = {
   position: 'absolute',
@@ -37,7 +33,7 @@ renderPopup(){
         latitude={this.state.popupInfo.state.latitude}
         onClose={() => this.setState({popupInfo: null})}
         closeOnClick={true}>
-        <p>{'YOUR POPUP INFO'}</p>
+        <p>{YOUR POPUP INFO}</p>
       </Popup>
     )
   }
@@ -45,17 +41,17 @@ render() {
     return (
       <MapGL
         {...viewport}
-        mapStyle="mapbox://styles/mapbox/streets-v9"
+        mapStyle="mapbox://styles/mapbox/dark-v9"
         mapboxApiAccessToken={TOKEN} >
         {markers}
         {this.renderPopup()}
         <div className="nav" style={navStyle}>
           <NavigationControl/>
-          <Marker longitude={35.99} latitude={78.89} offsetTop={1} offsetLeft={1}>
+          <Marker longitude={} latitude={} offsetTop={} offsetLeft={}>
             <Pin onClick={() => this.setState({popupInfo: popupInfo})}/>
           </Marker>
           </div>
-        
+        </div>
       </MapGL>
     );
   }

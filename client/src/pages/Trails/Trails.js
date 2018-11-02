@@ -1,70 +1,81 @@
 import React, { Component } from "react";
-import DeleteBtn from "../../components/DeleteBtn";
+// import DeleteBtn from "../../components/DeleteBtn";
 import Jumbotron from "../../components/Jumbotron";
 import API from "../../utils/API";
-import Map from '../../components/Map';
-import { Link } from "react-router-dom";
+import LocalGoogleMap from '../../components/Map';
+// import { Link } from "react-router-dom";
 import { Col, Row, Container } from "../../components/Grid";
-import { List, ListItem } from "../../components/List";
+// import { List, ListItem } from "../../components/List";
 import { Input, TextArea, FormBtn } from "../../components/Form";
-
+// import { SearchBox } from "react-google-maps/lib/components/places/SearchBox";
+// import SearchBox from "../../components/SearchBox/SearchBox"
 class Trails extends Component {
   state = {
-    books: [],
+    trailsData: [],
   };
 
   componentDidMount() {
     this.loadTrails();
   }
+  //search hiking API
+  searchTrailsData = () => {
+    API.searchTrails(lat, long)
+    .then(res => this.setState({trailsData: res.data}))
+    .catch(err => console.log(err));
+    console.log("API READ!")
+    console.log(res.data)
+  };
 
+//load saved trails
   loadTrails = () => {
     API.getTrails()
       .then(res =>
-        this.setState({ books: res.data, title: "", author: "", synopsis: "" })
+        this.setState({ trailsData: res.data })
       )
       .catch(err => console.log(err));
   };
+//delete saved trails
+  deleteTrail = id => {
+    API.deleteTrail(id)
+      .then(res => this.loadTrails())
+      .catch(err => console.log(err));
+  };
 
-  // deleteTrail = id => {
-  //   API.deleteTrail(id)
-  //     .then(res => this.loadTrails())
-  //     .catch(err => console.log(err));
-  // };
+  handleInputChange = event => {
+    const { name, value } = event.target;
+    this.setState({
+      [name]: value
+    });
+  };
 
-  // handleInputChange = event => {
-  //   const { name, value } = event.target;
-  //   this.setState({
-  //     [name]: value
-  //   });
-  // };
-
-  // handleFormSubmit = event => {
-  //   event.preventDefault();
-  //   if (this.state.title && this.state.author) {
-  //     API.saveTrail({
-  //       title: this.state.title,
-  //       author: this.state.author,
-  //       synopsis: this.state.synopsis
-  //     })
-  //       .then(res => this.loadTrails())
-  //       .catch(err => console.log(err));
-  //   }
-  // };
+  handleFormSubmit = event => {
+    event.preventDefault();
+    if (this.state.title && this.state.author) {
+      API.saveTrail({
+        title: this.state.title,
+        author: this.state.author,
+        synopsis: this.state.synopsis
+      })
+        .then(res => this.loadTrails())
+        .catch(err => console.log(err));
+    }
+  };
 
   render() {
+    console.log("state");
+    console.log(this.state);
     return (
       <Container fluid>
         <Row>
           <Col size="md-6">
-          <Map></Map>
-            {/* <form>
+            <form>
               <Input
                 value={this.state.title}
                 onChange={this.handleInputChange}
-                name="title"
-                placeholder="Title (required)"
+                name="trail"
+                placeholder="Search"
               />
-              <Input
+              {/* <Input
                 value={this.state.author}
                 onChange={this.handleInputChange}
                 name="author"
@@ -75,21 +86,26 @@ class Trails extends Component {
                 onChange={this.handleInputChange}
                 name="synopsis"
                 placeholder="Synopsis (Optional)"
-              />
+              /> */}
               <FormBtn
-                disabled={!(this.state.author && this.state.title)}
+                
                 onClick={this.handleFormSubmit}
               >
-                Submit Book
+                Search
               </FormBtn>
-            </form> */}
-          </Col>
-          <Col size="md-6 sm-12">
-            <Jumbotron>
-              <h1>Books On My List</h1>
-            </Jumbotron>
-            {this.state.books.length ? (
-              <List>
+            </form>
+          
+            <LocalGoogleMap></LocalGoogleMap>
+          
+          
+
+           </Col>
+           <Col size="md-6 sm-12">
+             <Jumbotron>
+               <h1>Weather</h1>
+             </Jumbotron>
+             {/* {this.state.books.length ? ( */}
+              {/* <List>
                 {this.state.books.map(book => (
                   <ListItem key={book._id}>
                     <Link to={"/books/" + book._id}>
@@ -101,14 +117,14 @@ class Trails extends Component {
                   </ListItem>
                 ))}
               </List>
-            ) : (
-              <h3>No Results to Display</h3>
-            )}
-          </Col>
-        </Row>
-      </Container>
-    );
-  }
-}
+               ) : (
+                 <h3>No Results to Display</h3>
+               )} */}
+             </Col>
+          </Row>
+         </Container>
+       );
+     }
+    }
 
 export default Trails;
