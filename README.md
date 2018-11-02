@@ -1,2 +1,1 @@
-# reactreadinglist-auth
-React Reading List App with simple Auth
+# Fair Weather Hiker 2.0
